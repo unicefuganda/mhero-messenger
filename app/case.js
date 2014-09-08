@@ -12,10 +12,6 @@ Case.load = function (filePath) {
     var deferred = Q.defer();
 
     parseXlsx(filePath, function (err, data) {
-        if (err) {
-            console.error(err);
-        }
-
         var headers = data[0];
         var realData = data.slice(1).filter(function (row) {
             return row[0].length > 0;
