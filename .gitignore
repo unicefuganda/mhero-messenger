@@ -3,3 +3,5 @@
 node_modules
 reports
 config/hero-auth-config.json
+*~
+#*#
