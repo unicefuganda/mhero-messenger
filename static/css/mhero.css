@@ -1,0 +1,116 @@
+body{
+	padding-top: 0;
+	margin-top: 0;
+}
+
+.header-text {
+	margin-left: 0;
+	float: left;
+}
+
+#header{
+	padding: 0;
+	height: 150px;
+  font-family: 'Helvetica Neue', 'RobotoThin', sans-serif;
+  border-bottom: 1px solid #DDDDDD;
+}
+.site-text {
+  margin-left: 40px;
+  padding-top: 45px;
+}
+
+.header-img {
+	float: right;
+}
+
+.header-img img{
+	height: 150px;
+}
+
+.site-name{
+  font-size: 45px; letter-spacing: 1px;
+  font-weight: 100;
+  color: #fff;
+}
+
+.site-sub-title{
+  font-size: 18px;
+  margin-top: 15px;
+  letter-spacing: 1px;
+  color: #DDDDDD;
+}
+.country {
+	font-weight: 900;
+}
+.partners img{
+  padding: 2px;
+  margin: 2px;
+}
+.intra-healthlogo, .unicef-logo{
+  width: 280px;
+  height: 80px;
+}
+.twlogo {
+  height: 50px;
+}
+#jembi {
+  height: 80px;
+  width: 280px;
+}
+#moh{
+  width: 150px;
+  height: 150px;
+}
+#ihris{
+  height: 80px;
+  width: 250px;
+}
+
+#usaid{
+  height: 100px;
+
+}
+
+#partners-text{
+  margin-left: 230px;
+}
+
+.container{
+  margin-right: auto;
+  margin-left: auto;
+}
+.app-name{
+  font-weight: 900;
+}
+.page-content{
+  text-align: justify;
+  line-height: 28px;
+  font-size: 18px;
+  font-weight: 300;
+  color: #999;
+}
+.page-content p {
+  padding-top: 5px;
+  margin-top: 5px;
+}
+.about-header{
+  color: #86a9ca;
+  font-size: 24px;
+  border-bottom: solid 1px #DDDDDD;
+  padding: 5px;
+}
+.rapid-pro-login-btn a{
+  width: 20%;
+  margin-left: auto;
+  margin-right: auto;
+  padding:  3%;
+  display:inline-block;
+  font-size: 2em;
+  font-weight: 900;
+}
+
+.footer-container{
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
