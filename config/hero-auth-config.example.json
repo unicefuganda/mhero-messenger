@@ -1,6 +1,5 @@
 {
-    // Copy this file to "hero-auth-config.json" and put your RapidPro token below
     "rapidpro": {
-        "token": "YOUR-TOKEN-HERE"
+        "token": "Copy this file to hero-auth-config.json and put your RapidPro token here"
     }
 }
