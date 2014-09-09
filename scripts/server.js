@@ -1,16 +1,12 @@
 #!/usr/bin/env node
 
-var finalHandler = require('finalhandler');
 var http = require('http');
-var serveStatic = require('serve-static');
 
-var rootDir = __dirname + '/..';
-
-var serve = serveStatic(rootDir + '/static', {'index': ['landing_page.html', 'index.html']});
+var RequestRouter = require(__dirname + '/../app/request-router');
+var router = new RequestRouter();
 
 var server = http.createServer(function(req, res){
-    var done = finalHandler(res, res);
-    serve(req, res, done);
+    router.handle(req, res);
 });
 
 server.listen(8000);
