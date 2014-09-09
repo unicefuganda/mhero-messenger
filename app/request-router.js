@@ -1,4 +1,4 @@
-var finalHandler = require('finalhandler'),http = require('http'),
+var finalHandler = require('finalhandler')
 serveStatic = require('serve-static'),
 serve = serveStatic(__dirname + '/../static', {'index': ['landing_page.html', 'index.html']}),
 fs = require('fs'),
@@ -12,14 +12,16 @@ var RequestRouter = function(){
 
 	var handlePost = function(req, res){
 		var formidable = require('formidable'),
+			uploadDir = __dirname + '/../uploads/',
 			util = require('util'),
 			form = new formidable.IncomingForm();
-			form.uploadDir  = __dirname + '/../uploads/'
+			form.uploadDir  = uploadDir;
 
     form.parse(req, function(err, fields, files) {
-      var oldPath = files.file.path,
-      dir = path.dirname(oldPath)
-      fs.rename(oldPath, path.join(dir, files.file.name),  function(err){
+      var tempFile = files.file,
+      newFileName = new Date().getTime().toString() + path.extname(tempFile.name);
+
+      fs.rename(tempFile.path, path.join(uploadDir, newFileName),  function(err){
       	console.log(err)
       });
 
