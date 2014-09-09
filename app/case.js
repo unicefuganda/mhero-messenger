@@ -1,6 +1,3 @@
-var Q = require('q');
-var parseXlsx = require('excel');
-
 var Case = function (row, headers) {
     var aCase = this;
     headers.forEach(function (header, position) {
@@ -15,23 +12,19 @@ var Case = function (row, headers) {
             return split[1] + ' ' + split[2];
         };
 
-        var formatPhoneNumber = function(rawPhoneNumber){
-            var phoneNumber = rawPhoneNumber.trim().replace(/[^\d\+]/g, '');
-            return '+231' + phoneNumber.slice(1);
-        };
-
-        return {
-            urns: ['tel:' + formatPhoneNumber(this.phone)],
-            text: 'Lab result for ' + this.case_id + ' is ' + this.result
+        var RapidProMessage = require(__dirname + '/rapid-pro-message');
+        return new RapidProMessage([this.phone],
+                'Lab result for ' + this.case_id + ' is ' + this.result
                 + '. Sample ' + formatDate(this.date_sample) + '. Onset '
-                + formatDate(this.date_onset) + '. Test ' + formatDate(this.date_test) + '.'
-        };
+                + formatDate(this.date_onset) + '. Test ' + formatDate(this.date_test) + '.');
     };
 };
 
 Case.load = function (filePath) {
+    var Q = require('q');
     var deferred = Q.defer();
 
+    var parseXlsx = require('excel');
     parseXlsx(filePath, function (err, data) {
         var headers = data[0];
         var realData = data.slice(1).filter(function (row) {
