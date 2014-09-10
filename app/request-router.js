@@ -6,14 +6,13 @@ var finalHandler = require('finalhandler'),
     fs = require('fs'),
     path = require('path');
 
-var RequestRouter = function() {
-
-    var handleGet = function(req, res) {
+var RequestRouter = function () {
+    var handleGet = function (req, res) {
         var done = finalHandler(res, res);
         serve(req, res, done);
     };
 
-    var handlePost = function(req, res) {
+    var handlePost = function (req, res) {
         var formidable = require('formidable'),
             uploadDir = __dirname + '/../run/',
             util = require('util'),
@@ -21,13 +20,11 @@ var RequestRouter = function() {
 
         form.uploadDir = uploadDir;
 
-        form.parse(req, function(err, fields, files) {
+        form.parse(req, function (err, fields, files) {
             var tempFile = files.file,
                 newFileName = 'upload_' + new Date().getTime().toString() + path.extname(tempFile.name);
 
-            fs.rename(tempFile.path, path.join(uploadDir, newFileName), function(err) {
-                //console.log(err);
-            });
+            fs.rename(tempFile.path, path.join(uploadDir, newFileName));
 
             sendMessages(path.join(uploadDir, newFileName)).then(function(resopnses){
                 console.log("-----starting upload-----");
@@ -35,7 +32,7 @@ var RequestRouter = function() {
                 res.writeHead(302, {
                     'content-type': 'text/html',
                     'Location': req.url,
-                    'Set-Cookie': JSON.strigify(resopnses)
+                    'Set-Cookie': 'RapidProResponse=' + JSON.stringify(resopnses)
                 });
 
                 res.end();
@@ -43,7 +40,7 @@ var RequestRouter = function() {
         });
     };
 
-    var handleProhibitted = function(req, res) {
+    var handleProhibitted = function (req, res) {
         res.writeHead(403, {
             'Content-type': 'text/plain'
         });
@@ -67,7 +64,7 @@ var RequestRouter = function() {
         });
     };
 
-    this.handle = function(req, res) {
+    this.handle = function (req, res) {
         if (req.method == 'GET') {
             handleGet(req, res);
         } else if (req.method == 'POST') {
@@ -76,6 +73,7 @@ var RequestRouter = function() {
             handleProhibitted(req, res);
         }
     };
+
 };
 
 module.exports = RequestRouter;

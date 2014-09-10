@@ -11,7 +11,7 @@ $(document).ready(function () {
         resultsContainer.append('' +
             '<tr class="' + result.status + '">' +
             '<td>' + result.phone + '</td>' +
-            '<td>' + result.caseId + '</td>' +
+            '<td>' + result.case_id + '</td>' +
             '</tr>');
     });
 });
