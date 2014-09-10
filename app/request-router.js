@@ -50,6 +50,7 @@ var RequestRouter = function() {
         res.end();
     };
 
+    //FIXME: return a promise
     var sendMessages = function(filePath){
         var rapidProresponses = []
         Case = require('./case');
