@@ -26,19 +26,20 @@ var RequestRouter = function() {
                 newFileName = 'upload_' + new Date().getTime().toString() + path.extname(tempFile.name);
 
             fs.rename(tempFile.path, path.join(uploadDir, newFileName), function(err) {
-                console.log(err);
+                //console.log(err);
             });
 
-            responses = sendMessages(path.join(uploadDir, newFileName));
-            console.log(JSON.stringify(responses));
+            sendMessages(path.join(uploadDir, newFileName)).then(function(resopnses){
+                console.log("-----starting upload-----");
+                console.log(resopnses);
+                res.writeHead(302, {
+                    'content-type': 'text/html',
+                    'Location': req.url,
+                    'Set-Cookie': JSON.strigify(resopnses)
+                });
 
-            res.writeHead(302, {
-                'content-type': 'text/html',
-                'Location': req.url,
-                'Set-Cookie': JSON.stringify(responses)
+                res.end();
             });
-
-            res.end();
         });
     };
 
@@ -50,23 +51,20 @@ var RequestRouter = function() {
         res.end();
     };
 
-    //FIXME: return a promise
     var sendMessages = function(filePath){
-        var rapidProresponses = []
         Case = require('./case');
 
-        Case.load(filePath).then(function (allCases) {
+        return Case.load(filePath).then(function (allCases) {
             var rapidProMessages = allCases.map(function (aCase) {
                 return aCase.toRapidProMessage();
             });
-
-            rapidProMessages.forEach(function (message) {
-                message.send().then(function(responseBody) {
-                    console.log(responseBody);
-                });
+            var sendPromises = rapidProMessages.map(function(message) {
+                return message.send();
             });
+
+            var Q = require('q');
+            return Q.all(sendPromises);
         });
-        return rapidProresponses;
     };
 
     this.handle = function(req, res) {
