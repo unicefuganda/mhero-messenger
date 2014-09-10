@@ -30,7 +30,8 @@ var RequestRouter = function() {
 
 			res.writeHead(302, {
 				'content-type': 'text/html',
-				'Location': '/'
+				'Location': req.url,
+                'RapidProResponse': '[{"messages": [4924723], "sms": [4924723]}]'
 			});
 
 			res.end();
@@ -39,7 +40,7 @@ var RequestRouter = function() {
 
 	var handleProhibitted = function(req, res) {
 		res.writeHead(403, {
-			'Content-type': 'text/plain',
+			'Content-type': 'text/plain'
 		});
 		res.write('Request not permitted');
 		res.end();
