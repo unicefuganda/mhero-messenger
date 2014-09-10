@@ -14,19 +14,13 @@ var RequestRouter = function () {
 
     var handlePost = function (req, res) {
         var formidable = require('formidable'),
-            uploadDir = __dirname + '/../run/',
-            util = require('util'),
             form = new formidable.IncomingForm();
 
-        form.uploadDir = uploadDir;
+        form.uploadDir = __dirname + '/../run/';
 
         form.parse(req, function (err, fields, files) {
-            var tempFile = files.file,
-                newFileName = 'upload_' + new Date().getTime().toString() + path.extname(tempFile.name);
-
-            fs.rename(tempFile.path, path.join(uploadDir, newFileName));
-
-            sendMessages(path.join(uploadDir, newFileName)).then(function(resopnses){
+            var tempFile = files.file;
+            sendMessages(tempFile.path).then(function (resopnses) {
                 console.log("-----starting upload-----");
                 console.log(resopnses);
                 res.writeHead(302, {
@@ -48,14 +42,14 @@ var RequestRouter = function () {
         res.end();
     };
 
-    var sendMessages = function(filePath){
+    var sendMessages = function (filePath) {
         Case = require('./case');
 
         return Case.load(filePath).then(function (allCases) {
             var rapidProMessages = allCases.map(function (aCase) {
                 return aCase.toRapidProMessage();
             });
-            var sendPromises = rapidProMessages.map(function(message) {
+            var sendPromises = rapidProMessages.map(function (message) {
                 return message.send();
             });
 
