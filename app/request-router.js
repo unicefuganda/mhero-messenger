@@ -31,7 +31,9 @@ var RequestRouter = function() {
 			res.writeHead(302, {
 				'content-type': 'text/html',
 				'Location': req.url,
-                'RapidProResponse': '[{"messages": [4924723], "sms": [4924723]}]'
+                'Set-Cookie': 'RapidProResponse=[' +
+                    '{"phone": "123456", "caseId": "abcdef", "status": "success"}, ' +
+                    '{"phone": "7890", "caseId": "ghijk", "status": "fail"}]'
 			});
 
 			res.end();
