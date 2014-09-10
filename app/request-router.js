@@ -8,7 +8,7 @@ var finalHandler = require('finalhandler'),
 
 var RequestRouter = function () {
     var handleGet = function (req, res) {
-        var done = finalHandler(res, res);
+        var done = finalHandler(req, res);
         serve(req, res, done);
     };
 
