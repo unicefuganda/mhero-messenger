@@ -1,7 +1,8 @@
 var finalHandler = require('finalhandler'),
     serveStatic = require('serve-static'),
     serve = serveStatic(__dirname + '/../static', {
-        'index': ['landing_page.html', 'index.html']
+        'index': ['landing_page.html', 'index.html'],
+        'etag': false   // FIXME: I don't know...it fails on the linux server without this option
     }),
     fs = require('fs'),
     path = require('path');
@@ -9,7 +10,6 @@ var finalHandler = require('finalhandler'),
 var RequestRouter = function () {
     var handleGet = function (req, res) {
         var done = finalHandler(req, res);
-        res.setHeader('ETag', new Date().getTime().toString()); //FIXME: reverse proxy should give us ETag?
         serve(req, res, done);
     };
 
