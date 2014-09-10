@@ -31,7 +31,7 @@ var RequestRouter = function () {
                 console.log(resopnses);
                 res.writeHead(302, {
                     'content-type': 'text/html',
-                    'Location': '/' + req.headers.referer.match(/^http(s)?:\/\/(.+)$/)[2].split('/').slice(1).join('/'),
+                    'Location': req.headers.referer,
                     'Set-Cookie': 'RapidProResponse=' + JSON.stringify(resopnses)
                 });
 
