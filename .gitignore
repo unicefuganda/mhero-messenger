@@ -6,3 +6,4 @@ config/hero-auth-config.json
 *~
 #*#
 uploads/*
+run/*

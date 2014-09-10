@@ -114,3 +114,11 @@ body{
   margin-left: auto;
   margin-right: auto;
 }
+
+#results .success {
+    background-color: white;
+}
+
+#results .fail {
+    background-color: #f0dfd8;
+}

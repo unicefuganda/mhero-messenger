@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-var exec = require('child_process').exec;
-
 var Case = require(__dirname + '/../app/case');
 Case.load(__dirname + '/../test/fixtures/sample.xlsx').then(function (allCases) {
     var rapidProMessages = allCases.map(function (aCase) {
@@ -11,7 +9,8 @@ Case.load(__dirname + '/../test/fixtures/sample.xlsx').then(function (allCases) 
         message.send().then(function(responseBody) {
             console.log('--> Sent:');
             console.log(message);
-            console.log('<-- Got:\n' + responseBody);
+            console.log('<-- Got:');
+            console.log(responseBody);
         });
     });
 });

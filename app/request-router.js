@@ -1,54 +1,79 @@
-var finalHandler = require('finalhandler'),http = require('http'),
-serveStatic = require('serve-static'),
-serve = serveStatic(__dirname + '/../static', {'index': ['landing_page.html', 'index.html']}),
-fs = require('fs'),
-path = require('path');
+var finalHandler = require('finalhandler'),
+    serveStatic = require('serve-static'),
+    serve = serveStatic(__dirname + '/../static', {
+        'index': ['landing_page.html', 'index.html']
+    }),
+    fs = require('fs'),
+    path = require('path');
 
-var RequestRouter = function(){
-	var handleGet = function(req, res){
-		var done = finalHandler(res, res);
-		serve(req, res, done);
-	};
+var RequestRouter = function () {
+    var handleGet = function (req, res) {
+        var done = finalHandler(res, res);
+        serve(req, res, done);
+    };
 
-	var handlePost = function(req, res){
-		var formidable = require('formidable'),
-			util = require('util'),
-			form = new formidable.IncomingForm();
-			form.uploadDir  = __dirname + '/../uploads/'
+    var handlePost = function (req, res) {
+        var formidable = require('formidable'),
+            uploadDir = __dirname + '/../run/',
+            util = require('util'),
+            form = new formidable.IncomingForm();
 
-    form.parse(req, function(err, fields, files) {
-      var oldPath = files.file.path,
-      dir = path.dirname(oldPath)
-      fs.rename(oldPath, path.join(dir, files.file.name),  function(err){
-      	console.log(err)
-      });
+        form.uploadDir = uploadDir;
 
-      res.writeHead(302, {
-        	'content-type': 'text/html',
-        	'Location': '/'
-      });
+        form.parse(req, function (err, fields, files) {
+            var tempFile = files.file,
+                newFileName = 'upload_' + new Date().getTime().toString() + path.extname(tempFile.name);
 
-      res.end();
-    });
-	};
+            fs.rename(tempFile.path, path.join(uploadDir, newFileName));
 
-	var handleProhibitted = function(req, res){
-		res.writeHead(403, {'Content-type': 'text/plain',});
-		res.write('Request not permitted');
-		res.end();
-	};
+            sendMessages(path.join(uploadDir, newFileName)).then(function(resopnses){
+                console.log("-----starting upload-----");
+                console.log(resopnses);
+                res.writeHead(302, {
+                    'content-type': 'text/html',
+                    'Location': req.url,
+                    'Set-Cookie': 'RapidProResponse=' + JSON.stringify(resopnses)
+                });
 
-	this.handle = function(req, res){
-		if (req.method == 'GET'){
-		    handleGet(req, res);
-		}
-		else if (req.method == 'POST')
-		{
-			handlePost(req, res);
-		}else{
-			handleProhibitted(req, res);
-		}
-	};
+                res.end();
+            });
+        });
+    };
+
+    var handleProhibitted = function (req, res) {
+        res.writeHead(403, {
+            'Content-type': 'text/plain'
+        });
+        res.write('Request not permitted');
+        res.end();
+    };
+
+    var sendMessages = function(filePath){
+        Case = require('./case');
+
+        return Case.load(filePath).then(function (allCases) {
+            var rapidProMessages = allCases.map(function (aCase) {
+                return aCase.toRapidProMessage();
+            });
+            var sendPromises = rapidProMessages.map(function(message) {
+                return message.send();
+            });
+
+            var Q = require('q');
+            return Q.all(sendPromises);
+        });
+    };
+
+    this.handle = function (req, res) {
+        if (req.method == 'GET') {
+            handleGet(req, res);
+        } else if (req.method == 'POST') {
+            handlePost(req, res);
+        } else {
+            handleProhibitted(req, res);
+        }
+    };
+
 };
 
 module.exports = RequestRouter;
