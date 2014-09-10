@@ -9,6 +9,7 @@ var finalHandler = require('finalhandler'),
 var RequestRouter = function () {
     var handleGet = function (req, res) {
         var done = finalHandler(req, res);
+        res.setHeader('ETag', new Date().getTime().toString()); //FIXME: reverse proxy should give us ETag?
         serve(req, res, done);
     };
 
