@@ -26,7 +26,7 @@ var RequestRouter = function () {
                 console.log(resopnses);
                 res.writeHead(302, {
                     'content-type': 'text/html',
-                    'Location': req.headers.referer,
+                    'Location': 'confirm.html',
                     'Set-Cookie': 'RapidProResponse=' + JSON.stringify(resopnses)
                 });
 
