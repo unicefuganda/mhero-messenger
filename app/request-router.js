@@ -21,13 +21,13 @@ var RequestRouter = function () {
 
         form.parse(req, function (err, fields, files) {
             var tempFile = files.file;
-            sendMessages(tempFile.path).then(function (resopnses) {
+            sendMessages(tempFile.path).then(function (responses) {
                 console.log("-----starting upload-----");
-                console.log(resopnses);
+                console.log(responses);
                 res.writeHead(302, {
                     'content-type': 'text/html',
                     'Location': 'confirm.html',
-                    'Set-Cookie': 'RapidProResponse=' + JSON.stringify(resopnses)
+                    'Set-Cookie': 'RapidProResponse=' + JSON.stringify(responses)
                 });
 
                 res.end();
